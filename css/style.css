@@ -1,0 +1,44 @@
+body {
+  font-family: "Poppins", sans-serif;
+  color: rgb(0, 0, 0);
+}
+
+.navbar .navbar-brand .judul {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: rgb(255, 255, 255);
+  font-style: normal;
+}
+.navbar .navbar-brand span {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #ff5e00;
+  font-style: italic;
+}
+
+.jumbotron {
+  background-color: #e2edff;
+  padding-top: 5rem;
+}
+
+.jumbotron span {
+  color: #ff5e00;
+  font-style: italic;
+}
+
+.jumbotron .lead {
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+
+.jumbotron svg {
+  margin-bottom: -1px; /* Atau sesuaikan sesuai kebutuhan */
+}
+
+.projects {
+  background-color: #e2edff;
+}
+
+section {
+  padding-top: 5rem;
+}
