@@ -21,29 +21,46 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <title>Register</title>
+    <style>
+        body {
+            background: white, 
+            url("https://unsplash.com/photos/monitor-showing-java-programming-OqtafYT5kTw");
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+    </style>
 </head>
-<body>
-    <div class="container">
-        <form action="register.php" method="POST">
+<body class="flex items-center justify-center h-screen">
+
+    <div class="w-full max-w-md bg-white/30 backdrop-blur-lg rounded-lg shadow-lg border border-white/20 p-8">
+        <h2 class="text-center text-2xl font-bold text-black mb-6">Create Account</h2>
+        <form action="register.php" method="POST" class="space-y-6">
             <div>
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" required>
+                <label for="username" class="block text-sm font-medium text-black">Username</label>
+                <input type="text" id="username" name="username" 
+                       class="mt-2 w-full px-4 py-2 bg-white/10 text-black border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                       required>
             </div>
             <div>
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
+                <label for="password" class="block text-sm font-medium text-black">Password</label>
+                <input type="password" id="password" name="password" 
+                       class="mt-2 w-full px-4 py-2 bg-white/10 text-black border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                       required>
             </div>
             <div>
-                <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                <button type="submit" 
+                        class="w-full py-2 px-4 bg-indigo-500 hover:bg-indigo-600 text-black font-medium rounded-lg shadow-md focus:ring-2 focus:ring-indigo-400 focus:outline-none">
                     Register
                 </button>
             </div>
         </form>
+        <p class="mt-4 text-sm text-center text-gray-300">
+            Already have an account? 
+            <a href="login.php" class="text-indigo-400 hover:underline">Login here</a>
+        </p>
     </div>
+
 </body>
 </html>
