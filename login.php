@@ -7,9 +7,9 @@ $error_message = "";
 $lockout_time = 0;
 
 // Function to check if the account is locked
-function is_account_locked($username) {
-    if (isset($_SESSION['login_attempts'][$username])) {
-        $attempts = $_SESSION['login_attempts'][$username];
+function is_account_locked() {
+    if (isset($_SESSION['login_attempts'])) {
+        $attempts = $_SESSION['login_attempts'];
         if ($attempts['count'] >= 5 && time() - $attempts['time'] < 30) {
             return true;
         }
@@ -18,9 +18,9 @@ function is_account_locked($username) {
 }
 
 // Function to get remaining lockout time
-function get_lockout_time($username) {
-    if (isset($_SESSION['login_attempts'][$username])) {
-        $attempts = $_SESSION['login_attempts'][$username];
+function get_lockout_time() {
+    if (isset($_SESSION['login_attempts'])) {
+        $attempts = $_SESSION['login_attempts'];
         if ($attempts['count'] >= 5) {
             $time_passed = time() - $attempts['time'];
             if ($time_passed < 30) {
@@ -34,33 +34,45 @@ function get_lockout_time($username) {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST["username"];
     $password = $_POST["password"];
+    $hashed_password = md5($password . $username);
 
     // Check if the account is locked
-    if (is_account_locked($username)) {
+    if (is_account_locked()) {
         $error_message = "Account is locked. Please try again later.";
-        $lockout_time = get_lockout_time($username);
+        $lockout_time = get_lockout_time();
     } else {
         // Check the password against the database
-        $query = "SELECT * FROM user WHERE username = '$username' AND password = '$password'";
+        $query = "SELECT * FROM user WHERE username = '$username' AND password = '$hashed_password'";
         $result = mysqli_query($mysqli, $query);
         
         if (mysqli_num_rows($result) > 0) {
+            // Fetch user data
+            $user = mysqli_fetch_assoc($result);
+            $role = $user['role'];
+
             // Successful login
-            unset($_SESSION['login_attempts'][$username]);
+            unset($_SESSION['login_attempts']);
             $_SESSION['username'] = $username;
             $_SESSION['password'] = $password;
             $_SESSION['login'] = true;
-            header("Location: index.php");
+            $_SESSION['role'] = $role;
+
+            // Redirect based on role
+            if ($role == 'admin') {
+                header("Location: dashboard.php");
+            } else {
+                header("Location: index.php");
+            }
             exit();
         } else {
             // Failed login attempt
-            if (!isset($_SESSION['login_attempts'][$username])) {
-                $_SESSION['login_attempts'][$username] = ['count' => 0, 'time' => time()];
+            if (!isset($_SESSION['login_attempts'])) {
+                $_SESSION['login_attempts'] = ['count' => 0, 'time' => time()];
             }
-            $_SESSION['login_attempts'][$username]['count']++;
-            $_SESSION['login_attempts'][$username]['time'] = time();
+            $_SESSION['login_attempts']['count']++;
+            $_SESSION['login_attempts']['time'] = time();
 
-            $attempts_left = 5 - $_SESSION['login_attempts'][$username]['count'];
+            $attempts_left = 5 - $_SESSION['login_attempts']['count'];
             if ($attempts_left > 0) {
                 $error_message = "Incorrect password. You have {$attempts_left} attempts left.";
             } else {
@@ -81,7 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
-            background: url('../img/2.jpg');
+            background: url('https://source.unsplash.com/1600x900/?nature,water');
             background-size: cover;
             background-position: center;
         }
@@ -134,7 +146,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
 
                 <div class="text-sm">
-                    <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">
+                    <a href="forgot_password.php" class="font-medium text-indigo-600 hover:text-indigo-500">
                         Forgot your password?
                     </a>
                 </div>
@@ -144,6 +156,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                     Sign in
                 </button>
+            </div>
+            <div class="register">
+                <a href="register.php" class="font-medium text-indigo-600 hover:text-indigo-500">
+                    Register
+                </a>
             </div>
         </form>
     </div>

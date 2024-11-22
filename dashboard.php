@@ -93,7 +93,7 @@ if (!isset($_SESSION['login'])) {
           width="200"
         />
         <h1 class="display-4 fw-semibold">KIZARU<span>ZERO</span></h1>
-        <p class="lead">Students | Web Developer | User</p>
+        <p class="lead">Students | Web Developer | Admin</p>
       </div>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
         <path
